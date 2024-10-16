@@ -1,89 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mancala</title>
-    <link rel="stylesheet" href="style.css">
-    <h1>How To Play Mancala</h1>
-</head>
-<body>
-    <p>Mancala is a traditional game that is played all over the world</p>
-<ul><h2> Step 1: Vocabulary and Set Up</h2>
-    <div><h4>You will see two rows of six "pits", with a long "mancala" on each end.
-        <br> The board is divided into two parts: Your side and mancala, and your opponent's side and mancala.
-        <br> Your side is the six pits closest to you, and your mancala is to your right. 
-        <br>The same is for your opponent; their side is the six pits closest to them and their mancala is to their right.
-    </h4></div>
-<div>
-    <h4>There are four "stones" in each pit, excluding the mancalas. This should total 48 stones.</h4>
-</div>
-<h2 style=>Step 2: Basic Gameplay</h2>
-<h4 style=>
-   <strong> Mancala is really an easy game to play!!</strong>
-   During a turn, a player grabs all of the stones in a pit on their side and drops them,<br>
-    one by one, in succeeding holes in a counter-clockwise direction.<br>
-     Players MAY place stones in their own mancala (it counts as a pit), <br>
-     but they MUST skip over their opponent's mancala.<br>
-      Players MAY place stones in pits on their opponent's side. <br>
-      This continues until the player has no more stones in his hand.<br>
-       It is then their opponents turn.*
-</h4>
-<h2>
-    Step 3: Scoring and Winning
-</h2>
-<h4>
-    The game is over when a player (not both) has no more stones on his side. <br>
-    His opponent then takes all of the stones on his side and places them in his mancala. <br>
-    The winner is the person with the most stones in his mancala after counting.
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mancala | papaB3A</title>
 
-</h4>
-<h2>
-    Step 4: Exceptions
-</h2>
-<h4>
-    If, when dropping stones in pits, you drop a stone into your own mancala,<br>
-     and that is the last stone in your hand, then you get to go again.<br>
-If, when dropping stones into pits, you drop a stone into a pit that was previously empty, <br>
-AND the pit is on your side, AND that was the last stone in your hand, <br>
-you take all of the stones in the pit directly above, and place them into your mancala.
-</h4>
-</ul> 
+        <link rel="stylesheet" href="w3.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-<div class="board">
-    <div class="player-two store"><p></p></div>
-
-    <div class="rows">
-        <div class="row player-two">
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
+    <body class="w3-container">
+        <!-- new heading-->
+        <div class="w3-card w3-padding-16 w3-margin" id="myHeading">
+            <span>How To Play Mancala</span>
+        </div>
+        
+        <!-- new game description -->
+        <div class="w3-panel w3-leftbar w3-sand ">
+            <p class="w3-xlarge w3-serif">
+            <i>"About"</i></p>
+            <p>
+                Mancala is a traditional game that is played all over the world across various cultures, 
+                especially in Africa, the Middle East, and parts of Asia. The word "Mancala" itself is 
+                derived from the Arabic word naqala, meaning "to move," which reflects the game's 
+                primary mechanic of moving pieces around a board.
+            </p>
         </div>
 
-        <div class="row player-one">
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
-            <div class="pit"><p>4</p></div>
+        <!-- new steps -->
+        <div class="w3-panel  w3-round-xlarge w3-serif " style="background-color: #CBD2A4;">
+            <p>Step 1.</p>
+            <p>Vocabulary and Set Up</p>
         </div>
-    </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph">
+                You will see two rows of six (pits), with a long (mancala) on each end.
+                <br>The board is divided into two parts: Your side and mancala, and your opponent's side and mancala.
+                <br>Your side is the six pits closest to you, and your mancala is to your right. 
+                <br>The same is for your opponent; their side is the six pits closest to them and their mancala is to their right.
+            </p>
+        </div>
 
-    <div class="player-one store"><p></p></div>
-</div>
+        <div class="w3-panel  w3-round-xlarge" style="background-color: #9A7E6F;">
+            <p>Step 2.</p>
+            <p>Basic Gameplay</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph" >
+                <strong> Mancala is a really easy game to play!!</strong>
+                During a turn, a player grabs all of the stones <br> in a pit on their side and drops them,
+                one by one, in succeeding (subsequent) <br>holes in a counter-clockwise direction.
+                Players MAY place stones <br>in their own mancala (it counts as a pit),
+                but they MUST skip over their opponent's mancala.<br>
+                Players MAY place stones in pits on their opponent's side.<br>
+                This continues until the player has no more stones in his hand.<br>
+                It is then their opponents turn.*
+            </p>
+        </div>
 
-<p class="status">It is player <span class="current-player">one</span>'s turn</p>
+        <div class="w3-panel w3-round-xlarge" style="background-color: #CBD2A4;">
+            <p>Step 3.</p>
+            <p>Scoring and Winning</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph">
+                The game is over when a player (not both) has no more stones on his side.<br>
+                His opponent then takes all of the stones on his side and places them in his mancala.<br>
+                The winner is the person with the most stones in his mancala after counting.
+            </p>
+        </div>
 
-<button class="new-game">New Game</button>
-<script src="index.js"></script>
-</body>
+        <div class="w3-panel  w3-round-xlarge"  style="background-color: #9A7E6F;">
+            <p>Step 4.</p>
+            <p>Exceptions</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph"> 
+                If, when dropping stones in pits, you drop a stone into your own mancala,<br>
+                and that is the last stone in your hand, then you get to go again.<br>
+                If, when dropping stones into pits, you drop a stone into a pit that was previously empty,<br>
+                and the pit is on your side, AND that was the last stone in your hand,<br>
+                you take all of the stones in the pit directly above, and place them into your mancala.
+            </p>
+        </div>
 
 
+        <!-- <div class="board">
+            <div class="player-two store"><p></p></div>
 
-<body> 
-</body>
+            <div class="rows">
+                <div class="row player-two">
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                </div>
+
+                <div class="row player-one">
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                    <div class="pit"><p>4</p></div>
+                </div>
+            </div>
+
+            <div class="player-one store"><p></p></div>
+        </div>
+
+        <p class="status">It is player <span class="current-player">one</span>'s turn</p>
+
+        <button class="new-game">New Game</button> -->
+        <script src="index.js"></script>
+    </body>
 </html>

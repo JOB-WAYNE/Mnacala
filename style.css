@@ -1,0 +1,17 @@
+#myHeading{
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.myParagraph{
+    /* font-size: 0.8rem; */
+    display: block; 
+    width: fit-content; 
+    margin: 0 auto;
+}
+
+.myParagraphWrapper{
+    display: block; 
+    text-align: left;
+}
