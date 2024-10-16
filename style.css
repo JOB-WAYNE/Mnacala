@@ -1,7 +1,34 @@
-#myHeading{
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
+#taskbar{
+    width: 1250px;
+    margin: 40px;
+    border: 1px solid black;
+}
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: brown;
+    color: white;
+    padding-left: 25px;
+    letter-spacing: 2px;
+}
+h1{
+    font-size: 40px;
+    margin: 20px;
+    font-weight: bolder;
+    font-family:cursive;
+
+}
+button{
+    background-color: brown;
+    color: black;
+    margin: 20px;
+    cursor:pointer;
+    border: none;
+    font-size: 25px;
+}
+.img{
+    border-style: ridge;
 }
 
 .myParagraph{
