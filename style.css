@@ -29,8 +29,16 @@ button{
     border: none;
     font-size: 25px;
 }
-.img{
-    border-style: ridge;
+#img {
+
+    display: block;
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px ;
+    padding:5px;
+
+    
 }
 
 .myParagraph{
