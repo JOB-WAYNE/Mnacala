@@ -1,4 +1,4 @@
-var pot_center = new Point(30,30);
+let pot_center = new Point(30,30);
 var proximity_threshold = 14 * 14;
 var colors = [
 new Color(255,0,0,0.7),
