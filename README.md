@@ -11,12 +11,10 @@ where players can learn the traditional gameplay mechanics in a modern setting.
 
 - [Introduction](#introduction)
 - [Game Rules](#game-rules)
-- [Features](#features)
+- [Features and Future Implemetations](#features)
 - [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
 - [Technologies Used](#technologies-used)
 - [How to Play](#how-to-play)
-- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -52,7 +50,7 @@ To get a local copy up and running, follow these steps:
 ### Installation
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/mancala-game.git
+   git clone git@github.com:JOB-WAYNE/Mnacala.git
 
 ## Technologies Used
 HTML: Markup for structuring the game interface.
@@ -69,7 +67,7 @@ jQuery: DOM manipulation and event handling.
 6. The player with the most beads in their mancala wins!
 
 ## Contributing
-All aontributions are welcome🤣💯! If you have suggestions or want to enhance the game, 
+All contributions are welcome🤣💯! If you have suggestions or want to enhance the game, 
 feel free to submit a pull request. Please ensure that your changes align with the project goals.
 
 Fork the project
