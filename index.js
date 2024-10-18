@@ -2,8 +2,8 @@
 
 let currentPlayer = 'top'; // Track the current player
 let gameState = {
-    player1: [4, 4, 4, 4, 4, 4],
-    player2: [4, 4, 4, 4, 4, 4],
+    player1: [ 4, 4, 4, 4, 4, 4 ],
+    player2: [ 4, 4, 4, 4, 4, 4 ],
     mancala: { top: 0, bottom: 0 }
 };
 
