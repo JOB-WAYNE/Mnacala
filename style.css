@@ -60,7 +60,8 @@ html, body
 .board
 {
   display:flex;
-  background-color:SaddleBrown;
+  /* background-color:SaddleBrown;...#257180 */
+  background-color:#257180;
   height:200px;
   width:800px;
   border-radius:50px;
