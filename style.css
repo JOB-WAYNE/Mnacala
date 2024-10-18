@@ -99,12 +99,17 @@ html, body
   flex-grow:1;
   margin:5px;
   border-radius:50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.bead
-{
-  position:absolute;
-	border-radius: 50%;
-	width: 25px;
-	height: 25px;
+.bead {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: pink;
+    background: radial-gradient(#b400a2, #9e0031);
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
 }
+
