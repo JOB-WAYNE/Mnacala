@@ -11,7 +11,7 @@ where players can learn the traditional gameplay mechanics in a modern setting.
 
 - [Introduction](#introduction)
 - [Game Rules](#game-rules)
-- [Features and Future Implemetations](#features)
+- [Features and Future Implemetations](#features-and-future-implemetations)
 - [Getting Started](#getting-started)
 - [Technologies Used](#technologies-used)
 - [How to Play](#how-to-play)
