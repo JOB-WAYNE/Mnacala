@@ -60,8 +60,8 @@ html, body
 .board
 {
   display:flex;
-  /* background-color:SaddleBrown;...#257180 */
-  background-color:#257180;
+   /* background-color:SaddleBrown #257180; */
+   background-color:#257180; 
   height:200px;
   width:800px;
   border-radius:50px;
@@ -100,12 +100,21 @@ html, body
   flex-grow:1;
   margin:5px;
   border-radius:50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.bead
-{
-  position:absolute;
-	border-radius: 50%;
-	width: 25px;
-	height: 25px;
+.bead {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #FFCC00; /* Color of the beads */
+  position: absolute;
+}
+
+.message {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
