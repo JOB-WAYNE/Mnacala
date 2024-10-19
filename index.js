@@ -215,3 +215,4 @@ $(document).ready(function() {
     addPotHandlers();
     updateGameMessage("Player Top's turn!");
 });
+
