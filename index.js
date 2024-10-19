@@ -187,7 +187,7 @@ document.getElementById('restart').addEventListener('click', function() {
     };
     currentPlayer = 'top'; // Reset to player 1
     updateGameMessage("Player Top's turn!");
-    ; // Re-insert the board
+    updateBoard();
 });
 
 
@@ -205,13 +205,12 @@ function addPotHandlers() {
             });
         }).click(function() {
             // Check if move is valid
-            $(".topmid .pot, .botmid .pot").off();
             handlePotClick($(this).attr("id"));
         });
 }
 
 $(document).ready(function() {
-    generateBoardHTML();
+    updateBoard();
     addPotHandlers();
     updateGameMessage("Player Top's turn!");
 });
