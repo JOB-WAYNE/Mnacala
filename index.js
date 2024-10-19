@@ -52,12 +52,6 @@ function generatePotHTML(beadCounts) {
     }).join('');
 }
 
-function insertBoardIntoParagraphs() {
-    const paragraphs = document.querySelectorAll('.myParagraph');
-    paragraphs.forEach(paragraph => {
-        paragraph.innerHTML += generateBoardHTML();
-    });
-}
 function handlePotClick(potId) {
     const pot = new Pot(potId);
     if (!pot.isValidMove(currentPlayer)) {
@@ -193,7 +187,7 @@ document.getElementById('restart').addEventListener('click', function() {
     };
     currentPlayer = 'top'; // Reset to player 1
     updateGameMessage("Player Top's turn!");
-    insertBoardIntoParagraphs(); // Re-insert the board
+    ; // Re-insert the board
 });
 
 
@@ -217,7 +211,7 @@ function addPotHandlers() {
 }
 
 $(document).ready(function() {
-    insertBoardIntoParagraphs();
+    generateBoardHTML();
     addPotHandlers();
     updateGameMessage("Player Top's turn!");
 });
