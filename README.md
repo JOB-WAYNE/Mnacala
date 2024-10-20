@@ -85,3 +85,4 @@ If you have questions, feel free to reach out:
 
 ## [License](LICENSE)
 MIT License
+Copyright (c) 2024 Job Wayne
