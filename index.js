@@ -27,10 +27,10 @@ function generateBoardHTML() {
             </div>
             <div class="section midsection">
                 <div class="midrow botmid">
-                    ${generatePotHTML(gameState.player1)}
+                    ${generatePotHTML(gameState.player1,'bottom')}
                 </div>
                 <div class="midrow topmid">
-                    ${generatePotHTML(gameState.player2)}
+                    ${generatePotHTML(gameState.player2, 'top')}
                 </div>
             </div>
             <div class="section endsection">

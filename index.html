@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mancala</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <div id="taskbar"> 
-        <header>
-            <nav>
-                <div> 
-                    <h1>Mancala</h1>
-                </div>
-                <div>
-                    <button id="restart" aria-label="Restart the game" tabindex="0">Restart</button>
-                    <!-- Instructions button links to instructions page -->
-                    <a href="instructions.html"><button id="instructions" aria-label="View instructions" tabindex="0">Instructions</button></a>
-                </div>
-            </nav>
-        </header>
+  <body>
+    <div id="taskbar">
+      <header>
+        <nav>
+          <div>
+            <h1>Mancala</h1>
+          </div>
+          <div>
+            <button id="restart" aria-label="Restart the game" tabindex="0">
+              Restart
+            </button>
+            <!-- Instructions button links to instructions page -->
+            <a href="instructions.html"
+              ><button
+                id="instructions"
+                aria-label="View instructions"
+                tabindex="0"
+              >
+                Instructions
+              </button></a
+            >
+          </div>
+        </nav>
+      </header>
     </div>
-   
+
     <!-- Game Board -->
-   <!-- Game message display -->
-   <div id="gameMessage">Player Top's turn</div>
+    <!-- Game message display -->
+    <div id="gameMessage">Player Top's turn</div>
 
-   <!-- Game Board -->
-   <div id="gameBoard" class="board">
-       <!-- This will be populated dynamically using JavaScript -->
-   </div>
+    <!-- Game Board -->
+    <div id="gameBoard" class="board">
+      <!-- This will be populated dynamically using JavaScript -->
+    </div>
     <script src="index.js"></script>
-</body>
+  </body>
 </html>
-
-
-
