@@ -23,42 +23,64 @@ function generateBoardHTML() {
     return `
         <div class="board">
             <div class="section endsection">
-                <div class="pot" id="mb">${gameState.mancala.bottom}</div> 
+                <div class="pot mancala" id="mb">${gameState.mancala.bottom}</div> 
             </div>
             <div class="section midsection">
                 <div class="midrow botmid">
-                    ${generatePotHTML(gameState.player1,'bottom')}
+                    ${generatePotHTML(gameState.player1, 'bottom')}
                 </div>
                 <div class="midrow topmid">
                     ${generatePotHTML(gameState.player2, 'top')}
                 </div>
             </div>
             <div class="section endsection">
-                <div class="pot" id="mt">${gameState.mancala.top}</div>        
+                <div class="pot mancala" id="mt">${gameState.mancala.top}</div>        
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
-function generatePotHTML(beadCounts) {
+function generatePotHTML(beadCounts, player) {
+    if (player === 'top') {
+        beadCounts = beadCounts.slice().reverse(); // Reverse pots for top player for proper display
+    }
     return beadCounts.map((count, index) => {
-        let potHTML = '';
+        let potHTML = '<div class = "bead-container">';
         for (let i = 0; i < count; i++) {
             const color = beadColors[Math.floor(Math.random() * beadColors.length)];
             potHTML += `<div class="bead" style="background-color: ${color};"></div>`;
         }
-        // Add the class 'pot' here
-        return `<div class="pot" id="p${index}">${potHTML}</div>`;
+        potHTML+=`</div>`;
+        // Correctly set the ID
+        return `<div class="pot" id="p${player}${index}">${potHTML}</div>`;
     }).join('');
 }
 
-
 function handlePotClick(potId) {
-    const potIndex = parseInt(potId.replace('p', ''));
+    if (checkGameOver()) return;
+
+    // Use a regular expression to extract player and index from the pot ID
+    const match = potId.match(/p(top|bottom)(\d+)/);
+    if (!match) {
+        console.error("Invalid pot ID:", potId);
+        return;
+    }
+
+    const potPlayer = match[1];  // Extracts 'top' or 'bottom' from the pot ID
+    const index = parseInt(match[2]);
+
+    // Check if the clicked pot belongs to the current player
+    if (potPlayer !== currentPlayer) {
+        // Display a message indicating it's not the correct player's turn
+        updateGameMessage(`It's ${currentPlayer === 'top' ? 'Top' : 'Bottom'} player's turn!`);
+        return;
+    }
+
+    // Get the current player's pots
     const currentPots = currentPlayer === 'top' ? gameState.player1 : gameState.player2;
 
-    if (currentPots[potIndex] === 0) {
-        updateGameMessage("Invalid move! Please select a valid pot.");
+    // Check if the selected pot has beads
+    if (currentPots[index] === 0) {
+        updateGameMessage("Invalid move! Please select a pot with beads.");
         return;
     }
 
@@ -69,62 +91,125 @@ function handlePotClick(potId) {
     // Delay to show feedback before processing the move
     setTimeout(() => {
         clickedPot.style.backgroundColor = ""; // Reset color
-        updateGameState(potIndex); // Update game state
+        updateGameState(currentPlayer, index); // Update game state
+        if (checkGameOver()) {
+            endGame();
+        }
     }, 300);
 }
 
-function updateGameState(potIndex) {
-    const currentPots = currentPlayer === 'top' ? gameState.player2 : gameState.player1;
+function updateGameState(player, potIndex) {
+    // Get the current player's pots and their opponent's pots
+    const currentPots = player === 'top' ? gameState.player1 : gameState.player2;
+    const opponentPots = player === 'top' ? gameState.player2 : gameState.player1;
+    
+    // Get the number of beads in the selected pot
     const beadsToMove = currentPots[potIndex];
+    currentPots[potIndex] = 0; // Clear the selected pot
 
-    currentPots[potIndex] = 0;
-    const lastIndex = distributeBeads(potIndex, beadsToMove);
+    // Distribute the beads and get the index of the last pot
+    const lastIndex = distributeBeads(player, potIndex, beadsToMove);
 
+    // Update the board to reflect the new state
     updateBoard();
 
-    // If the last bead landed in the player's Mancala, they get another turn
-    if ((currentPlayer === 'top' && lastIndex === 6) || (currentPlayer === 'bottom' && lastIndex === 13)) {
-        updateGameMessage(`Player ${currentPlayer}'s turn again!`);
-    } else {
-        switchPlayer();
+    // **Capture Rule:**
+    if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 0) {
+        const oppositeIndex = 5 - lastIndex; // Find the opposite pot index
+        const capturedBeads = opponentPots[oppositeIndex];
+
+        if (capturedBeads > 0) {
+            // Clear the last pot and the opposite pot
+            currentPots[lastIndex] = 0;
+            opponentPots[oppositeIndex] = 0;
+
+            // Add the captured beads to the player's Mancala
+            if (player === 'top') {
+                gameState.mancala.top += capturedBeads + 1; // Include the last bead
+            } else {
+                gameState.mancala.bottom += capturedBeads + 1; // Include the last bead
+            }
+
+            updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'} captured ${capturedBeads} beads!`);
+        }
     }
+
+    // If the last bead landed in the player's Mancala, they get another turn
+    if ((player === 'top' && lastIndex === 6) || (player === 'bottom' && lastIndex === 13)) {
+        updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'}'s turn again!`);
+        return; // No need to switch players
+    }
+
+    // Switch to the other player if the last bead did not land in the Mancala
+    switchPlayer();
 }
 
-function distributeBeads(startIndex, beadCount) {
+function isOnPlayerSide(player, index) {
+    // For top player: valid indices are 7-12 (their row)
+    // For bottom player: valid indices are 0-5 (their row)
+    return (player === 'top' && index >= 7 && index <= 12) ||
+           (player === 'bottom' && index >= 0 && index <= 5);
+}
+function distributeBeads(player, startIndex, beadCount) {
     let index = startIndex;
-    const isTopPlayer = currentPlayer === 'top';
-    const currentPots = isTopPlayer ? gameState.player2 : gameState.player1;
-    const opponentPots = isTopPlayer ? gameState.player1 : gameState.player2;
+    const isTopPlayer = player === 'top';
 
+    // Loop through and distribute all the beads
     while (beadCount > 0) {
-        index = (index + 1) % 14;
+        index++; // Move to the next position
 
-        // Skip opponent's mancala
-        if ((isTopPlayer && index === 6) || (!isTopPlayer && index === 13)) {
-            continue;
+        // Wrapping the index when it exceeds 13 (the last Mancala)
+        if (index > 13) {
+            index = 0; // Wrap around to the start of the bottom player's pots
         }
 
-        // Player's own mancala
-        if (index === 13 && !isTopPlayer) {
-            gameState.mancala.bottom++;
-        } else if (index === 6 && isTopPlayer) {
-            gameState.mancala.top++;
-        } 
-        // Distribute to player's pots
-        else if (index < 6 && isTopPlayer) {
-            gameState.player2[index]++;
-        } else if (index > 6 && !isTopPlayer) {
-            gameState.player1[index - 7]++;
-        } 
-        // Distribute to opponent's pots
-        else if (index < 6 && !isTopPlayer) {
-            gameState.player1[index]++;
-        } else if (index > 6 && isTopPlayer) {
-            gameState.player2[index - 7]++;
+        // Distribute beads based on the current player
+        if (isTopPlayer) {
+            if (index === 6) {
+                // Skip bottom player's Mancala when it's top player's turn
+                continue;
+            }
+            if (index === 13) {
+                // Place bead in top player's Mancala
+                gameState.mancala.top++;
+                beadCount--;
+                if (beadCount === 0) {
+                    return 13; // If last bead goes into top player's Mancala, return the index
+                }
+            } else if (index >= 0 && index <= 5) {
+                // Place bead in bottom player's pots
+                gameState.player2[index]++;
+                beadCount--;
+            } else if (index >= 7 && index <= 12) {
+                // Place bead in top player's pots
+                gameState.player1[index - 7]++;
+                beadCount--;
+            }
+        } else { // Bottom player's turn
+            if (index === 13) {
+                // Skip top player's Mancala when it's bottom player's turn
+                continue;
+            }
+            if (index === 6) {
+                // Place bead in bottom player's Mancala
+                gameState.mancala.bottom++;
+                beadCount--;
+                if (beadCount === 0) {
+                    return 6; // If last bead goes into bottom player's Mancala, return the index
+                }
+            } else if (index >= 0 && index <= 5) {
+                // Place bead in bottom player's pots
+                gameState.player2[index]++;
+                beadCount--;
+            } else if (index >= 7 && index <= 12) {
+                // Place bead in top player's pots
+                gameState.player1[index - 7]++;
+                beadCount--;
+            }
         }
-
-        beadCount--;
     }
+
+    return index; // Return the index of the last pot where the bead was placed
 }
 function updateBoard() {
     document.getElementById('gameBoard').innerHTML = generateBoardHTML();
@@ -132,17 +217,24 @@ function updateBoard() {
 
     if (checkGameOver()) {
         endGame();
-        return 'addPotHandlers';
-    }}
+        return; 
+    }
+}
+
 function switchPlayer() {
     currentPlayer = currentPlayer === 'top' ? 'bottom' : 'top';
     updateGameMessage(`Player ${currentPlayer === 'top' ? 'Top' : 'Bottom'}'s turn!`);
+    if (!hasValidMoves()) {
+        endGame(); // Handle game end logic if no valid moves exist
+    }
 }
 
+
 function endGame() {
-    const winner = gameState.mancala.top > gameState.mancala.bottom ? 'Top' : 'Bottom';
+    const winner = gameState.mancala.top > gameState.mancala.bottom ? 'Top' : (gameState.mancala.bottom > gameState.mancala.top ? 'Bottom' : 'Tie');
     updateGameMessage(`Game Over! Player ${winner} wins!`);
 }
+
 function checkGameOver() {
     const player1Empty = gameState.player1.every(count => count === 0);
     const player2Empty = gameState.player2.every(count => count === 0);
@@ -150,11 +242,11 @@ function checkGameOver() {
     if (player1Empty || player2Empty) {
         // Move all remaining beads to the opponent's Mancala
         if (player1Empty) {
-            gameState.mancala.bottom += gameState.player2.reduce((a, b) => a + b, 0);
-            gameState.player2.fill(0);
+            gameState.mancala.top += gameState.player2.reduce((a, b) => a + b, 0);
+            gameState.player2.fill(0); // Clear player 2's pots
         } else if (player2Empty) {
-            gameState.mancala.top += gameState.player1.reduce((a, b) => a + b, 0);
-            gameState.player1.fill(0);
+            gameState.mancala.bottom += gameState.player1.reduce((a, b) => a + b, 0);
+            gameState.player1.fill(0); // Clear player 1's pots
         }
         return true;
     }
@@ -163,7 +255,14 @@ function checkGameOver() {
 
 function hasValidMoves() {
     const pots = currentPlayer === 'top' ? gameState.player1 : gameState.player2;
-    return pots.some(count => count > 0);
+    const validMovesExist = pots.some(count => count > 0);
+    
+    if (!validMovesExist) {
+        updateGameMessage(`No valid moves available for ${currentPlayer}. Game Over!`);
+        endGame(); // Call your function to handle game end logic
+    }
+    
+    return validMovesExist;
 }
 
 document.getElementById('restart').addEventListener('click', function() {
@@ -176,23 +275,16 @@ document.getElementById('restart').addEventListener('click', function() {
     currentPlayer = 'top'; // Reset to player 1
     updateGameMessage("Player Top's turn!");
     updateBoard();
+    addPotHandlers();
 });
 
 function addPotHandlers() {
-    $(".topmid .pot, .botmid .pot")
-        .mouseenter(function() {
-            $(this).css({
-                "background-color": "rgba( 255, 255, 255, 0.16)",
-                "cursor": "pointer"
-            });
-        }).mouseleave(function() {
-            $(this).css({
-                "background-color": "rgba(255, 255, 255, 0.08)",
-                "cursor": "arrow"
-            });
-        }).click(function() {
-            handlePotClick($(this).attr("id"));
+    const pots = document.querySelectorAll('.pot');
+    pots.forEach(pot => {
+        pot.addEventListener('click', () => {
+            handlePotClick(pot.id);
         });
+    });
 }
 
 $(document).ready(function() {

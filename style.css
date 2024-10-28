@@ -58,9 +58,10 @@ html, body {
 .board {
   display: flex;
   background-color: #257180; 
-  height: 200px;
-  width: 800px;
   border-radius: 30px;
+  margin: 20px auto;
+  height: 200px;
+  width:800px;
   margin-top: 20px;
   
 }
@@ -87,7 +88,7 @@ html, body {
 }
 
 .pot {
-  position: relative;
+  position:relative;
   background-color: rgba(255, 255, 255, 0.08);
   flex-grow: 1;
   margin: 5px;
@@ -96,6 +97,18 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  overflow: hidden;
+}
+.bead-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  align-items: center; 
+}
+.pot.mancala {
+  width: 80px;
+  height: 150px;
+  background-color: #ff7043;
 }
 
 .bead {
@@ -103,7 +116,7 @@ html, body {
   height: 20px;
   border-radius: 50%;
   background-color: #FFCC00; /* Color of the beads */
-  position: inline-block;
+  position:inline-block;
 }
 
 .message {

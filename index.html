@@ -16,19 +16,11 @@
             <h1>Mancala</h1>
           </div>
           <div>
-            <button id="restart" aria-label="Restart the game" tabindex="0">
-              Restart
-            </button>
+            <button id="restart" aria-label="Restart the game" tabindex="0">Restart</button>
             <!-- Instructions button links to instructions page -->
-            <a href="instructions.html"
-              ><button
-                id="instructions"
-                aria-label="View instructions"
-                tabindex="0"
-              >
-                Instructions
-              </button></a
-            >
+            <a href="instructions.html">
+              <button id="instructions" aria-label="View instructions" tabindex="0">Instructions</button>
+          </a>
           </div>
         </nav>
       </header>
@@ -36,12 +28,10 @@
 
     <!-- Game Board -->
    <!-- Game message display -->
-   <div id="gameMessage">Player one turn </div>
+   <div id="gameMessage">Player top turn </div>
 
     <!-- Game Board -->
-    <div id="gameBoard" class="board">
-      <!-- This will be populated dynamically using JavaScript -->
-    </div>
+    <div id="gameBoard" class="board"></div>
     <script src="index.js"></script>
   </body>
 </html>
