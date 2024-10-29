@@ -154,62 +154,33 @@ function distributeBeads(player, startIndex, beadCount) {
     let index = startIndex;
     const isTopPlayer = player === 'top';
 
-    // Loop through and distribute all the beads
     while (beadCount > 0) {
-        index++; // Move to the next position
+        index++;
 
-        // Wrapping the index when it exceeds 13 (the last Mancala)
-        if (index > 13) {
-            index = 0; // Wrap around to the start of the bottom player's pots
+        // Wrap around if index exceeds 13
+        if (index > 13) index = 0;
+
+        // Top player shouldn't place a bead in the bottom player's Mancala
+        if (isTopPlayer && index === 6) continue;
+
+        // Bottom player shouldn't place a bead in the top player's Mancala
+        if (!isTopPlayer && index === 13) continue;
+
+        // Place a bead in the current position
+        if (index === 6) {
+            gameState.mancala.bottom++;
+        } else if (index === 13) {
+            gameState.mancala.top++;
+        } else if (index >= 0 && index <= 5) {
+            gameState.player1[index]++;
+        } else if (index >= 7 && index <= 12) {
+            gameState.player2[index - 7]++;
         }
 
-        // Distribute beads based on the current player
-        if (isTopPlayer) {
-            if (index === 6) {
-                // Skip bottom player's Mancala when it's top player's turn
-                continue;
-            }
-            if (index === 13) {
-                // Place bead in top player's Mancala
-                gameState.mancala.top++;
-                beadCount--;
-                if (beadCount === 0) {
-                    return 13; // If last bead goes into top player's Mancala, return the index
-                }
-            } else if (index >= 0 && index <= 5) {
-                // Place bead in bottom player's pots
-                gameState.player2[index]++;
-                beadCount--;
-            } else if (index >= 7 && index <= 12) {
-                // Place bead in top player's pots
-                gameState.player1[index - 7]++;
-                beadCount--;
-            }
-        } else { // Bottom player's turn
-            if (index === 13) {
-                // Skip top player's Mancala when it's bottom player's turn
-                continue;
-            }
-            if (index === 6) {
-                // Place bead in bottom player's Mancala
-                gameState.mancala.bottom++;
-                beadCount--;
-                if (beadCount === 0) {
-                    return 6; // If last bead goes into bottom player's Mancala, return the index
-                }
-            } else if (index >= 0 && index <= 5) {
-                // Place bead in bottom player's pots
-                gameState.player2[index]++;
-                beadCount--;
-            } else if (index >= 7 && index <= 12) {
-                // Place bead in top player's pots
-                gameState.player1[index - 7]++;
-                beadCount--;
-            }
-        }
+        beadCount--;
     }
 
-    return index; // Return the index of the last pot where the bead was placed
+    return index; // Return the last index
 }
 function updateBoard() {
     document.getElementById('gameBoard').innerHTML = generateBoardHTML();
