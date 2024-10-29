@@ -114,32 +114,37 @@ function updateGameState(player, potIndex) {
     updateBoard();
 
     // **Capture Rule:**
-    if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 0) {
-        const oppositeIndex = 5 - lastIndex; // Find the opposite pot index
-        const capturedBeads = opponentPots[oppositeIndex];
-
-        if (capturedBeads > 0) {
-            // Clear the last pot and the opposite pot
-            currentPots[lastIndex] = 0;
-            opponentPots[oppositeIndex] = 0;
-
-            // Add the captured beads to the player's Mancala
-            if (player === 'top') {
-                gameState.mancala.top += capturedBeads + 1; // Include the last bead
-            } else {
-                gameState.mancala.bottom += capturedBeads + 1; // Include the last bead
-            }
-
-            updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'} captured ${capturedBeads} beads!`);
-        }
+// **Capture Rule:**
+if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 1) {
+    let oppositeIndex;
+    if (player === 'top') {
+        oppositeIndex = 5 - (lastIndex - 7); // Adjust for the top player's reversed row
+    } else {
+        oppositeIndex = 5 - lastIndex; // For bottom player, it's straightforward
     }
+    
+    const capturedBeads = opponentPots[oppositeIndex];
 
+    if (capturedBeads > 0) {
+        // Clear the last pot and the opposite pot
+        currentPots[lastIndex] = 0;
+        opponentPots[oppositeIndex] = 0;
+
+        // Add the captured beads to the player's Mancala
+        if (player === 'top') {
+            gameState.mancala.top += capturedBeads + 1; // Include the last bead
+        } else {
+            gameState.mancala.bottom += capturedBeads + 1; // Include the last bead
+        }
+
+        updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'} captured ${capturedBeads} beads!`);
+    }
+}
     // If the last bead landed in the player's Mancala, they get another turn
     if ((player === 'top' && lastIndex === 6) || (player === 'bottom' && lastIndex === 13)) {
         updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'}'s turn again!`);
-        return; // No need to switch players
+        return; // No need to switch players, they get another turn
     }
-
     // Switch to the other player if the last bead did not land in the Mancala
     switchPlayer();
 }
@@ -252,6 +257,7 @@ document.getElementById('restart').addEventListener('click', function() {
 function addPotHandlers() {
     const pots = document.querySelectorAll('.pot');
     pots.forEach(pot => {
+
         pot.addEventListener('click', () => {
             handlePotClick(pot.id);
         });
