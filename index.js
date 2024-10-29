@@ -66,7 +66,12 @@ function handlePotClick(potId) {
     }
 
     const potPlayer = match[1];  // Extracts 'top' or 'bottom' from the pot ID
-    const index = parseInt(match[2]);
+    let index = parseInt(match[2]);
+
+    // Correct the index for the top player (since their pots are reversed in the HTML)
+    if (potPlayer === 'top') {
+        index = 5 - index; // Reverse the index for the top player
+    }
 
     // Check if the clicked pot belongs to the current player
     if (potPlayer !== currentPlayer) {
@@ -76,7 +81,7 @@ function handlePotClick(potId) {
     }
 
     // Get the current player's pots
-    const currentPots = currentPlayer === 'top' ? gameState.player1 : gameState.player2;
+    const currentPots = currentPlayer === 'top' ? gameState.player2 : gameState.player1;
 
     // Check if the selected pot has beads
     if (currentPots[index] === 0) {
@@ -97,12 +102,11 @@ function handlePotClick(potId) {
         }
     }, 300);
 }
-
 function updateGameState(player, potIndex) {
     // Get the current player's pots and their opponent's pots
-    const currentPots = player === 'top' ? gameState.player1 : gameState.player2;
-    const opponentPots = player === 'top' ? gameState.player2 : gameState.player1;
-    
+    const currentPots = player === 'top' ? gameState.player2 : gameState.player1;
+    const opponentPots = player === 'top' ? gameState.player1 : gameState.player2;
+
     // Get the number of beads in the selected pot
     const beadsToMove = currentPots[potIndex];
     currentPots[potIndex] = 0; // Clear the selected pot
@@ -114,41 +118,42 @@ function updateGameState(player, potIndex) {
     updateBoard();
 
     // **Capture Rule:**
-// **Capture Rule:**
-if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 1) {
-    let oppositeIndex;
-    if (player === 'top') {
-        oppositeIndex = 5 - (lastIndex - 7); // Adjust for the top player's reversed row
-    } else {
-        oppositeIndex = 5 - lastIndex; // For bottom player, it's straightforward
-    }
-    
-    const capturedBeads = opponentPots[oppositeIndex];
-
-    if (capturedBeads > 0) {
-        // Clear the last pot and the opposite pot
-        currentPots[lastIndex] = 0;
-        opponentPots[oppositeIndex] = 0;
-
-        // Add the captured beads to the player's Mancala
+    if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 1) {
+        let oppositeIndex;
         if (player === 'top') {
-            gameState.mancala.top += capturedBeads + 1; // Include the last bead
+            // Adjust for the reversed indices
+            oppositeIndex = 5 - lastIndex;
         } else {
-            gameState.mancala.bottom += capturedBeads + 1; // Include the last bead
+            oppositeIndex = 5 - lastIndex;
         }
 
-        updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'} captured ${capturedBeads} beads!`);
+        const capturedBeads = opponentPots[oppositeIndex];
+
+        if (capturedBeads > 0) {
+            // Clear the last pot and the opposite pot
+            currentPots[lastIndex] = 0;
+            opponentPots[oppositeIndex] = 0;
+
+            // Add the captured beads to the player's Mancala
+            if (player === 'top') {
+                gameState.mancala.top += capturedBeads + 1; // Include the last bead
+            } else {
+                gameState.mancala.bottom += capturedBeads + 1; // Include the last bead
+            }
+
+            updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'} captured ${capturedBeads} beads!`);
+        }
     }
-}
+
     // If the last bead landed in the player's Mancala, they get another turn
-    if ((player === 'top' && lastIndex === 6) || (player === 'bottom' && lastIndex === 13)) {
+    if ((player === 'top' && lastIndex === 13) || (player === 'bottom' && lastIndex === 6)) {
         updateGameMessage(`${player === 'top' ? 'Top' : 'Bottom'}'s turn again!`);
         return; // No need to switch players, they get another turn
     }
+
     // Switch to the other player if the last bead did not land in the Mancala
     switchPlayer();
 }
-
 function isOnPlayerSide(player, index) {
     // For top player: valid indices are 7-12 (their row)
     // For bottom player: valid indices are 0-5 (their row)
@@ -177,9 +182,12 @@ function distributeBeads(player, startIndex, beadCount) {
         } else if (index === 13) {
             gameState.mancala.top++;
         } else if (index >= 0 && index <= 5) {
+            // Bottom player pots (player1), no need for adjustment
             gameState.player1[index]++;
         } else if (index >= 7 && index <= 12) {
-            gameState.player2[index - 7]++;
+            // Top player pots (player2), reverse the index to correctly distribute beads
+            const adjustedIndex = 12 - index;  // Reverse the index for top player
+            gameState.player2[adjustedIndex]++;
         }
 
         beadCount--;
