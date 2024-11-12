@@ -1,37 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mancala</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="w3.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
+    <!-- Taskbar with Game Title and Restart Button -->
     <div id="taskbar">
-      <header>
-        <nav>
-          <div>
-            <h1>Mancala</h1>
-          </div>
-          <div>
-            <button id="restart" aria-label="Restart the game" tabindex="0">Restart</button>
-            <!-- Instructions button links to instructions page -->
-            <a href="instructions.html">
-              <button id="instructions" aria-label="View instructions" tabindex="0">Instructions</button>
-          </a>
-          </div>
-        </nav>
-      </header>
+        <header>
+            <nav>
+                <div>
+                    <h1>Mancala</h1>
+                </div>
+                <div>
+                    <button id="restart" aria-label="Restart the game" tabindex="0">Restart</button>
+                </div>
+            </nav>
+        </header>
     </div>
 
-    <!-- Game Board -->
-   <!-- Game message display -->
-   <div id="gameMessage">Player top turn </div>
+    <!-- Game Message Display -->
+    <div id="gameMessage">Player One's turn</div>
 
     <!-- Game Board -->
     <div id="gameBoard" class="board"></div>
+
+    <!-- Instructions Section (Merged from Instructions HTML) -->
+    <div id="instructions-section">
+        <h2>Mancala Instructions</h2>
+
+        <!-- Step 1: Vocabulary and Set Up -->
+        <div class="w3-panel w3-round-xlarge w3-serif" style="background-color: #CBD2A4;">
+            <p>Step 1: Vocabulary and Set Up</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph">
+                You will see two rows of six (pits), with a long (mancala) on each end.
+                <br>The board is divided into two parts: Your side and mancala, and your opponent's side and mancala.
+                <br>Your side is the six pits closest to you, and your mancala is to your right. 
+                <br>The same is for your opponent; their side is the six pits closest to them and their mancala is to their right.
+            </p>
+        </div>
+
+        <!-- Step 2: Basic Gameplay -->
+        <div class="w3-panel w3-round-xlarge" style="background-color: #9A7E6F;">
+            <p>Step 2: Basic Gameplay</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph">
+                <strong>Mancala is a really easy game to play!!</strong><br>
+                During a turn, a player grabs all of the stones in a pit on their side and drops them,
+                one by one, in succeeding (subsequent) holes in a counter-clockwise direction.
+                Players MAY place stones in their own mancala (it counts as a pit),
+                but they MUST skip over their opponent's mancala.
+                Players MAY place stones in pits on their opponent's side.
+                This continues until the player has no more stones in their hand.
+                It is then their opponent's turn.
+            </p>
+        </div>
+
+        <!-- Step 3: Scoring and Winning -->
+        <div class="w3-panel w3-round-xlarge" style="background-color: #CBD2A4;">
+            <p>Step 3: Scoring and Winning</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph">
+                The game is over when a player (not both) has no more stones on their side.
+                His opponent then takes all of the stones on his side and places them in his mancala.
+                The winner is the person with the most stones in their mancala after counting.
+            </p>
+        </div>
+
+        <!-- Step 4: Exceptions -->
+        <div class="w3-panel w3-round-xlarge" style="background-color: #9A7E6F;">
+            <p>Step 4: Exceptions</p>
+        </div>
+        <div class="myParagraphWrapper">
+            <p class="myParagraph"> 
+                If, when dropping stones in pits, you drop a stone into your own mancala,
+                and that is the last stone in your hand, then you get to go again.
+                If, when dropping stones into pits, you drop a stone into a pit that was previously empty,
+                and the pit is on your side, AND that was the last stone in your hand,
+                you take all of the stones in the pit directly above, and place them into your mancala.
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript to Control the Game -->
     <script src="index.js"></script>
-  </body>
+</body>
 </html>

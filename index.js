@@ -58,7 +58,9 @@ function generatePotHTML(beadCounts, player) {
         `;
     }).join('');
 }
-    function automatedMove(player) {
+
+// Perform an automated move
+function automatedMove(player) {
     const currentPots = player === 'playerOne' ? gameState.playerOne : gameState.playerTwo;
     const possibleMoves = [];
 
@@ -69,20 +71,20 @@ function generatePotHTML(beadCounts, player) {
         }
     }
 
-    if (possibleMoves.length>0) {
-        const potIndex = possibleMoves[Math.floor(Math.random()* possibleMoves.length)];
-         const potId = `p${player}${player === 'playerOne' ? 5 - potIndex : potIndex}`; // Adjust index for playerOne
+    if (possibleMoves.length > 0) {
+        const potIndex = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        const potId = `p${player}${player === 'playerOne' ? 5 - potIndex : potIndex}`; // Adjust index for playerOne
 
-        handlePotClick(potId);
+        updateGameState(player, potIndex); // Directly update the game state without requiring a click
         return true; // Move made successfully
     } else {
         return false; // No valid moves for this player
     }
 }
 
+// Autoplay the game with a slower interval
 function autoPlayGame() {
     let intervalId;
-
 
     intervalId = setInterval(() => {
         if (checkGameOver()) {
@@ -91,7 +93,7 @@ function autoPlayGame() {
             return;
         }
 
-
+        // Make an automated move for the current player
         if (!automatedMove(currentPlayer)) {
             switchPlayer();
             if (checkGameOver()) { // Still no valid moves, game over
@@ -101,73 +103,9 @@ function autoPlayGame() {
             }
         }
 
-    }, 500);
+    }, 1500); // Slower autoplay speed (1.5 seconds)
+    
     return intervalId;
-}
-
-
-
-
-// Add a button to start autoplay
-const autoPlayButton = document.createElement('button');
-autoPlayButton.textContent = "Autoplay";
-autoPlayButton.id = "autoplayButton"; // Give the button an ID
-autoPlayButton.addEventListener('click', () => {
-  const intervalId = autoPlayGame(); // Store the interval ID
-
-  // Disable the Autoplay button and create a Stop button
-  autoPlayButton.disabled = true; 
-  const stopButton = document.createElement('button');
-  stopButton.textContent = "Stop";
-  stopButton.id = "stopButton";
-  stopButton.addEventListener('click', () => {
-    clearInterval(intervalId); // Stop the autoplay
-    autoPlayButton.disabled = false; // Re-enable Autoplay
-    stopButton.remove(); // Remove the Stop button
-  });
-  document.body.appendChild(stopButton); // Add Stop button next to Autoplay
-});
-
-document.body.appendChild(autoPlayButton);
-
-function handlePotClick(potId) {
-    if (checkGameOver()) return;
-
-    const match = potId.match(/p(playerOne|playerTwo)(\d+)/);
-    if (!match) {
-        console.error("Invalid pot ID:", potId);
-        return;
-    }
-
-    const potPlayer = match[1];
-    let index = parseInt(match[2]);
-
-    if (potPlayer === 'playerOne') {
-        index = 5 - index; // Reverse the index for Player One
-    }
-
-    if (potPlayer !== currentPlayer) {
-        updateGameMessage(`It's ${currentPlayer === 'playerOne' ? 'Player One' : 'Player Two'}'s turn!`);
-        return;
-    }
-
-    const currentPots = currentPlayer === 'playerOne' ? gameState.playerOne : gameState.playerTwo;
-
-    if (currentPots[index] === 0) {
-        updateGameMessage("Invalid move! Please select a pot with beads.");
-        return;
-    }
-
-    const clickedPot = document.getElementById(potId);
-    clickedPot.style.backgroundColor = "rgba(255, 255, 0, 0.5)"; // Highlight the pot
-
-    setTimeout(() => {
-        clickedPot.style.backgroundColor = ""; // Reset color
-        updateGameState(currentPlayer, index);
-        if (checkGameOver()) {
-            endGame();
-        }
-    }, 300);
 }
 
 function updateGameState(player, potIndex) {
@@ -182,7 +120,7 @@ function updateGameState(player, potIndex) {
 
     // Check for capture
     if (isOnPlayerSide(player, lastIndex) && currentPots[lastIndex] === 1) {
-        const oppositeIndex = 5 - (lastIndex -7);
+        const oppositeIndex = 5 - (lastIndex - 7);
         const capturedBeads = opponentPots[oppositeIndex];
 
         if (capturedBeads > 0) {
@@ -200,13 +138,13 @@ function updateGameState(player, potIndex) {
     }
 
     // Check if the last bead landed in the player's Mancala
-    if ((player === 'playerOne' && lastIndex === 13) || (player === 'playerTwo' && lastIndex === 6))  {
+    if ((player === 'playerOne' && lastIndex === 13) || (player === 'playerTwo' && lastIndex === 6)) {
         updateGameMessage(`${player === 'playerOne' ? 'Player One' : 'Player Two'}'s turn again!`);
-    }else{
+    } else {
+        switchPlayer();
+    }
+}
 
-    switchPlayer();
-}
-}
 function isOnPlayerSide(player, index) {
     return (player === 'playerOne' && index >= 7 && index <= 12) ||
            (player === 'playerTwo' && index >= 0 && index <= 5);
@@ -220,8 +158,8 @@ function distributeBeads(player, startIndex, beadCount) {
         if (index > 13) index = 0; // Reset index if it goes beyond the board
 
         // Skip the opponent's Mancala
-        if ((player === 'playerOne' && index === 6) || (player === 'playerTwo' && index === 13)) { 
-            continue; 
+        if ((player === 'playerOne' && index === 6) || (player === 'playerTwo' && index === 13)) {
+            continue;
         }
 
         // Place beads in the respective pots
@@ -230,9 +168,9 @@ function distributeBeads(player, startIndex, beadCount) {
         } else if (index === 13) {
             gameState.mancala.playerOne++; // Add to Player One's Mancala
         } else if (index >= 0 && index <= 5) {
-            gameState.playerTwo[index]++; // Bottom player pots
+            gameState.playerTwo[index]++; // Player Two's pots
         } else if (index >= 7 && index <= 12) {
-            const adjustedIndex = index -7; // Correctly adjust index for Player One
+            const adjustedIndex = index - 7; // Correctly adjust index for Player One
             gameState.playerOne[adjustedIndex]++;
         }
 
@@ -241,10 +179,9 @@ function distributeBeads(player, startIndex, beadCount) {
 
     return index; // Return the last index
 }
+
 function updateBoard() {
     document.getElementById('gameBoard').innerHTML = generateBoardHTML();
-    addPotHandlers();
-
     if (checkGameOver()) {
         endGame();
         return; 
@@ -284,38 +221,19 @@ function checkGameOver() {
 function hasValidMoves() {
     const pots = currentPlayer === 'playerOne' ? gameState.playerOne : gameState.playerTwo;
     const validMovesExist = pots.some(count => count > 0);
-    
+
     if (!validMovesExist) {
         updateGameMessage(`No valid moves available for ${currentPlayer}. Game Over!`);
         endGame();
     }
-    
+
     return validMovesExist;
 }
 
-document.getElementById('restart').addEventListener('click', function() {
-    gameState = {
-        playerOne: [4, 4, 4, 4, 4, 4],
-        playerTwo: [4, 4, 4, 4, 4, 4],
-        mancala: { playerOne: 0, playerTwo: 0 }
-    };
-    currentPlayer = 'playerOne'; // Reset to Player One
-    updateGameMessage("Player One's turn!");
+document.addEventListener('DOMContentLoaded', function() {
     updateBoard();
-    addPotHandlers();
-});
-
-function addPotHandlers() {
-    const pots = document.querySelectorAll('.pot');
-    pots.forEach(pot => {
-        pot.addEventListener('click', () => {
-            handlePotClick(pot.id);
-        });
-    });
-}
-
-$(document).ready(function() {
-    updateBoard();
-    addPotHandlers();
     updateGameMessage("Player One's turn!");
+
+    // Start the autoplay as soon as the board is ready
+    autoPlayGame();
 });
